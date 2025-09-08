@@ -1,0 +1,8 @@
+{
+    "NewGameObjectID": "skinjason",
+    "BaseGameObjectID": "riftEnemy3",
+    "SpriteToUse": "jasonstarlightangel",
+    "ScaleX": 1,
+    "ScaleY": 1,
+    "Flip": true
+}

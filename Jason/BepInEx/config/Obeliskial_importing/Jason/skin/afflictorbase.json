@@ -1,0 +1,15 @@
+{
+    "BaseSkin": true,
+    "PerkLevel": 0,
+    "SkinGO": "skinjason",
+    "SkinID": "afflictorbase",
+    "SkinName": "Default",
+    "SkinOrder": 0,
+    "SkinSubclass": "afflictor",
+    "Sku": "",
+    "SpritePortrait": "jasonPortrait",
+    "SpritePortraitGrande": "jasonPortraitGrande",
+    "SpriteSilueta": "jasonSilueta",
+    "SpriteSiluetaGrande": "jasonSiluetaGrande",
+    "SteamStat": ""
+}

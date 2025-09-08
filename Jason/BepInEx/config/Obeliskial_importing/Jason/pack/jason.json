@@ -1,0 +1,15 @@
+{
+    "Card0": "afflictorfeastofabsolution",
+    "Card1": "poisondart",
+    "Card2": "flankingstrike",
+    "Card3": "bladestorm",
+    "Card4": "bladedance",
+    "Card5": "",
+    "CardSpecial0": "",
+    "CardSpecial1": "",
+    "PackClass": "warrior",
+    "PackID": "jason",
+    "PackName": "Jason",
+    "PerkList": [],
+    "RequiredClass": "afflictor"
+}
