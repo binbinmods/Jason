@@ -23,7 +23,7 @@
     "DamageBonusPercentValue": 0.0,
     "DamageBonusPercentValue2": 0.0,
     "DamageBonusPercentValue3": 0.0,
-    "Description": "Bleed +2, Poison +2. Bleed and Poison cannot be prevented by immunities or buffer, nor can they be dispelled (even when specified).",
+    "Description": "Bleed +2, Poison +2. Bleed and Poison on monsters cannot be prevented by immunities or buffer, nor can they be dispelled (even when specified).",
     "HealFlatBonus": 0,
     "HealPercentBonus": 0.0,
     "HealReceivedFlatBonus": 0,

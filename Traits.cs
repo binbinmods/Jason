@@ -210,7 +210,7 @@ namespace Jason
                     break;
                 case "vitality":
                     traitOfInterest = trait2a;
-                    if (IfCharacterHas(characterOfInterest, CharacterHas.Trait, traitOfInterest, AppliesTo.Global))
+                    if (IfCharacterHas(characterOfInterest, CharacterHas.Trait, traitOfInterest, AppliesTo.Monsters))
                     {
                         __result.RemoveAuraCurse = (AuraCurseData)null;
                         // __result.RemoveAuraCurse2 = null;
@@ -387,7 +387,7 @@ namespace Jason
         {
             // LogInfo($"HealAuraCursePrefix {subclassName}");
             string traitId = trait2a;
-            if (AtOManager.Instance.TeamHaveTrait(traitId) && (AC == GetAuraCurseData("bleed") || AC == GetAuraCurseData("poison")))
+            if (AtOManager.Instance.TeamHaveTrait(traitId) && (AC == GetAuraCurseData("bleed") || AC == GetAuraCurseData("poison")) && !__instance.IsHero)
             {
                 return false;
             }

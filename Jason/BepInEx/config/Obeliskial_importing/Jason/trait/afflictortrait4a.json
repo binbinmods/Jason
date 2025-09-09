@@ -23,7 +23,7 @@
     "DamageBonusPercentValue": 0.0,
     "DamageBonusPercentValue2": 0.0,
     "DamageBonusPercentValue3": 0.0,
-    "Description": "Poison and Bleed cannot be restricted. Single hit cards do bonus damage equal to 25% of the targets Bleed and Poison.",
+    "Description": "Bleed and Poison on monsters cannot be restricted. Single hit cards do bonus damage equal to 25% of the targets Bleed and Poison.",
     "HealFlatBonus": 0,
     "HealPercentBonus": 0.0,
     "HealReceivedFlatBonus": 0,
