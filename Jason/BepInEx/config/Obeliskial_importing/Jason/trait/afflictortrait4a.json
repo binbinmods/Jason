@@ -23,7 +23,7 @@
     "DamageBonusPercentValue": 0.0,
     "DamageBonusPercentValue2": 0.0,
     "DamageBonusPercentValue3": 0.0,
-    "Description": "Bleed and Poison on monsters cannot be restricted. Single hit cards do bonus damage equal to 25% of the targets Bleed and Poison.",
+    "Description": "Vitality +1. At the start of every round but the first, gain 5% to All Resistances.",
     "HealFlatBonus": 0,
     "HealPercentBonus": 0.0,
     "HealReceivedFlatBonus": 0,
@@ -39,5 +39,5 @@
     "TimesPerTurn": 0,
     "TraitCard": "",
     "TraitCardForAllHeroes": "",
-    "TraitName": "Verdict"
+    "TraitName": "Defiant"
 }

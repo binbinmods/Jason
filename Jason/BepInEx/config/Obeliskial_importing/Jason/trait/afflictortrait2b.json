@@ -23,7 +23,7 @@
     "DamageBonusPercentValue": 0.0,
     "DamageBonusPercentValue2": 0.0,
     "DamageBonusPercentValue3": 0.0,
-    "Description": "On hit, gain 1 Fury and 1 Vitality. Apply 1 Scourge. (8 times/turn)",
+    "Description": "You get All Damage +0.5 for each unique Curse in play. When you damage an enemy, gain 1 Vitality.",
     "HealFlatBonus": 0,
     "HealPercentBonus": 0.0,
     "HealReceivedFlatBonus": 0,

@@ -23,7 +23,7 @@
     "DamageBonusPercentValue": 0.0,
     "DamageBonusPercentValue2": 0.0,
     "DamageBonusPercentValue3": 0.0,
-    "Description": "On hit, apply 1 Harbinger of Doom. At the end of turn, Harbinger of Doom applies 2 of each Curse to all enemies for each stack of Harbinger of Doom",
+    "Description": "Poison and Bleed cannot be restricted. On hit, apply 1 Harbinger of Doom. At the end of turn, Harbinger of Doom applies 2 of each Curse to all enemies for each stack of Harbinger of Doom",
     "HealFlatBonus": 0,
     "HealPercentBonus": 0.0,
     "HealReceivedFlatBonus": 0,
