@@ -1,5 +1,5 @@
 {
-    "Activation": "",
+    "Activation": "None",
     "AuraCurseBonus1": "",
     "AuraCurseBonus2": "",
     "AuraCurseBonus3": "",
@@ -37,7 +37,7 @@
     "ResistModifiedValue3": 0,
     "TimesPerRound": 0,
     "TimesPerTurn": 0,
-    "TraitCard": "afflictorsineater",
+    "TraitCard": "afflictorshadowofthehegemon",
     "TraitCardForAllHeroes": "",
-    "TraitName": "Sin Eater"
+    "TraitName": "Shadow of the Hegemon"
 }

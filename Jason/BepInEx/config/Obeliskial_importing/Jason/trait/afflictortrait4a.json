@@ -1,5 +1,5 @@
 {
-    "Activation": "",
+    "Activation": "None",
     "AuraCurseBonus1": "",
     "AuraCurseBonus2": "",
     "AuraCurseBonus3": "",
@@ -23,7 +23,7 @@
     "DamageBonusPercentValue": 0.0,
     "DamageBonusPercentValue2": 0.0,
     "DamageBonusPercentValue3": 0.0,
-    "Description": "Vitality +1. At the start of every round but the first, gain 5% to All Resistances.",
+    "Description": "All Damage +1 for each unique Curse on monsters.",
     "HealFlatBonus": 0,
     "HealPercentBonus": 0.0,
     "HealReceivedFlatBonus": 0,
@@ -39,5 +39,5 @@
     "TimesPerTurn": 0,
     "TraitCard": "",
     "TraitCardForAllHeroes": "",
-    "TraitName": "Defiant"
+    "TraitName": "Castigate"
 }

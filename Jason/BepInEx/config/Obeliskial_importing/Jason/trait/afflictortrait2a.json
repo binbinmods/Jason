@@ -1,5 +1,5 @@
 {
-    "Activation": "",
+    "Activation": "Damage",
     "AuraCurseBonus1": "",
     "AuraCurseBonus2": "",
     "AuraCurseBonus3": "",
@@ -23,7 +23,7 @@
     "DamageBonusPercentValue": 0.0,
     "DamageBonusPercentValue2": 0.0,
     "DamageBonusPercentValue3": 0.0,
-    "Description": "Bleed +2, Poison +2. Bleed and Poison on monsters cannot be prevented by immunities or buffer, nor can they be dispelled (even when specified).",
+    "Description": "When you damage a monster, they suffer Shadow Damage equal to 15% of its Bleed stacks and Holy Damage equal to 15% of its Poison stacks",
     "HealFlatBonus": 0,
     "HealPercentBonus": 0.0,
     "HealReceivedFlatBonus": 0,
@@ -39,5 +39,5 @@
     "TimesPerTurn": 0,
     "TraitCard": "",
     "TraitCardForAllHeroes": "",
-    "TraitName": "Blood from a Stone"
+    "TraitName": "Hand of the Reaper"
 }

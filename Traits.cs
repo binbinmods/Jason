@@ -12,6 +12,7 @@ using System.Text;
 using TMPro;
 using Obeliskial_Essentials;
 using System.Data.Common;
+using System.Text.RegularExpressions;
 
 namespace Jason
 {
@@ -82,16 +83,15 @@ namespace Jason
             else if (_trait == trait2a)
             {
                 // trait2a
-                // Blood from a Stone: Bleed +2, Poison +2. 
-                // Poison and bleed cannot be prevented by immunities or buffer, nor can they be dispelled (even when specified). 
-
-                // if (CanIncrementTraitActivations(traitId) && _castedCard.HasCardType(Enums.CardType.Defense))// && MatchManager.Instance.energyJustWastedByHero > 0)
-                // {
-                //     LogDebug($"Handling Trait {traitId}: {traitName}");
-                //     // _character?.ModifyEnergy(1);
-                //     // DrawCards(1);
-                //     IncrementTraitActivations(traitId);
-                // }
+                // When you damage a monster, deal Shadow Damage equal to 15% of its Bleed stacks and Holy Damage equal to 15% of its Poison stacks
+                if (!IsLivingNPC(_target))
+                {
+                    float multiplier = 0.15f;
+                    int holyDamage = Mathf.RoundToInt(_target.GetAuraCharges("poison") * multiplier);
+                    int shadowDamage = Mathf.RoundToInt(_target.GetAuraCharges("bleed") * multiplier);
+                    _target.IndirectDamage(Enums.DamageType.Shadow, shadowDamage);
+                    _target.IndirectDamage(Enums.DamageType.Holy, holyDamage);
+                }
             }
 
 
@@ -99,10 +99,17 @@ namespace Jason
             else if (_trait == trait2b)
             {
                 // trait2b:
-                // Castigate. All Damage +1 for each unique Curse in play. On hit, gain 1 Vitality.
+                // When you play a card that costs 2 or more, 
+                // reduce by 1 the cost of your highest cost card that costs 2 or more.
                 LogDebug($"Handling Trait {traitId}: {traitName}");
-
-                _character?.SetAuraTrait(_character, "vitality", 1);
+                if (CanIncrementTraitActivations(traitId) && MatchManager.Instance.energyJustWastedByHero >= 2)
+                {
+                    CardData highCost = GetRandomHighestCostCard(Enums.CardType.None);
+                    if (highCost.GetCardFinalCost() >= 2)
+                    {
+                        ReduceCardCost(ref highCost, amountToReduce: 1, isPermanent: true);
+                    }
+                }
 
             }
 
@@ -111,8 +118,7 @@ namespace Jason
                 // trait 4a;
 
                 LogDebug($"Handling Trait {traitId}: {traitName}");
-                // Verdict - Poison and Bleed cannot be restricted. 
-                // Deal Bonus single hit damage equal to 25% of current Poison and Bleed on target. 
+                // Castigate - All Damage +1 for each unique Curse on monsters.
             }
 
             else if (_trait == trait4b)
@@ -160,90 +166,72 @@ namespace Jason
             string traitOfInterest;
             switch (_acId)
             {
-                // trait2a:
+                // trait0:
                 // Poison and bleed cannot be prevented by immunities or buffer, 
                 // nor can they be dispelled (even when specified).
 
                 // trait2b:
 
                 // trait 4a;
-                // Max Vitality charges +50. 
-                // At the start of every round, gain 10% to All Resistances. 
 
                 // trait 4b:
-                // Poison and Bleed cannot be restricted
 
                 case "bleed":
-                    traitOfInterest = trait2a;
+                    traitOfInterest = trait0;
                     if (IfCharacterHas(characterOfInterest, CharacterHas.Trait, traitOfInterest, AppliesTo.Monsters))
                     {
                         __result.Preventable = false;
                         __result.Removable = false;
                     }
-                    traitOfInterest = trait4b;
-                    if (IfCharacterHas(characterOfInterest, CharacterHas.Trait, traitOfInterest, AppliesTo.Monsters))
-                    {
-                        __result.MaxCharges = -1;
-                        __result.MaxMadnessCharges = -1;
-                    }
+                    // traitOfInterest = trait4b;
+                    // if (IfCharacterHas(characterOfInterest, CharacterHas.Trait, traitOfInterest, AppliesTo.Monsters))
+                    // {
+                    //     __result.MaxCharges = -1;
+                    //     __result.MaxMadnessCharges = -1;
+                    // }
                     break;
                 case "poison":
-                    traitOfInterest = trait2a;
+                    traitOfInterest = trait0;
                     if (IfCharacterHas(characterOfInterest, CharacterHas.Trait, traitOfInterest, AppliesTo.Monsters))
                     {
                         __result.Preventable = false;
                         __result.Removable = false;
                     }
-                    traitOfInterest = trait4a;
-                    if (IfCharacterHas(characterOfInterest, CharacterHas.Trait, traitOfInterest, AppliesTo.Monsters))
-                    {
-                        __result.MaxCharges = -1;
-                        __result.MaxMadnessCharges = -1;
-                    }
+                    // traitOfInterest = trait4b;
+                    // if (IfCharacterHas(characterOfInterest, CharacterHas.Trait, traitOfInterest, AppliesTo.Monsters))
+                    // {
+                    //     __result.MaxCharges = -1;
+                    //     __result.MaxMadnessCharges = -1;
+                    // }
 
                     break;
                 case "vitality":
-                    traitOfInterest = trait2a;
-                    if (IfCharacterHas(characterOfInterest, CharacterHas.Trait, traitOfInterest, AppliesTo.Monsters))
-                    {
-                        __result.RemoveAuraCurse = (AuraCurseData)null;
-                        // __result.RemoveAuraCurse2 = null;
-                    }
-                    traitOfInterest = trait4a;
-                    if (IfCharacterHas(characterOfInterest, CharacterHas.Trait, traitOfInterest, AppliesTo.ThisHero))
-                    {
-                        __result.MaxMadnessCharges += 50;
-                    }
+
                     break;
             }
         }
 
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(Character), "GetTraitDamagePercentModifiers")]
-        public static void GetTraitDamagePercentModifiersPostfix(Enums.DamageType DamageType, ref float __result, Character __instance)
-        {
-            // ___useCache = false;
+        // [HarmonyPostfix]
+        // [HarmonyPatch(typeof(Character), "GetTraitDamagePercentModifiers")]
+        // public static void GetTraitDamagePercentModifiersPostfix(Enums.DamageType DamageType, ref float __result, Character __instance)
+        // {
+        //     // ___useCache = false;
 
-            if (!IsLivingHero(__instance) || MatchManager.Instance == null)
-            {
-                return;
-            }
+        //     if (!IsLivingHero(__instance) || MatchManager.Instance == null)
+        //     {
+        //         return;
+        //     }
 
-            // All Damage +0.3% for each stack of Bleed and Poison in play, up to a maximum of +300% All Damage.
-            string traitOfInterest = trait0;
+        //     // All Damage +0.3% for each stack of Bleed and Poison in play, up to a maximum of +300% All Damage.
+        //     string traitOfInterest = trait0;
 
-            if (__instance.HaveTrait(traitOfInterest))
-            {
-                int nStacks = CountAllStacks("bleed") + CountAllStacks("poison");
-                __result += Mathf.Clamp(0.3f * nStacks, 0, 300);
-            }
+        //     if (__instance.HaveTrait(traitOfInterest))
+        //     {
+        //         int nStacks = CountAllStacks("bleed") + CountAllStacks("poison");
+        //         __result += Mathf.Clamp(0.3f * nStacks, 0, 300);
+        //     }
+        // }
 
-
-
-
-
-
-        }
         [HarmonyPostfix]
         [HarmonyPatch(typeof(Character), "GetTraitDamageFlatModifiers")]
         public static void GetTraitDamageFlatModifiersPostfix(Enums.DamageType DamageType, ref int __result, Character __instance)
@@ -254,15 +242,16 @@ namespace Jason
             {
                 return;
             }
-            // foreach unique curse gain +1 all damage
-            string traitOfInterest = trait2b;
+            // trait4a
+            // Castigate - foreach unique curse on monsters gain +1 all damage
+            string traitOfInterest = trait4a;
             if (__instance.HaveTrait(traitOfInterest))
             {
                 HashSet<string> curses = [];
-                foreach (Hero hero in MatchManager.Instance.GetTeamHero())
-                {
-                    curses.UnionWith(hero.GetCurseList());
-                }
+                // foreach (Hero hero in MatchManager.Instance.GetTeamHero())
+                // {
+                //     curses.UnionWith(hero.GetCurseList());
+                // }
                 foreach (NPC npc in MatchManager.Instance.GetTeamNPC())
                 {
                     curses.UnionWith(npc.GetCurseList());
@@ -272,18 +261,18 @@ namespace Jason
             }
         }
 
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(Character), "GetItemResistModifiers")]
-        public static void GetItemResistModifiersPostfix(Character __instance, ref int __result, Enums.DamageType type)
-        {
-            if (MatchManager.Instance == null || !IsLivingHero(__instance) || !__instance.HaveTrait(trait4a))
-            {
-                return;
-            }
-            LogDebug("Handling trait4a - Bonus resists");
-            __result += (MatchManager.Instance.GetCurrentRound() - 1) * 10;
+        // [HarmonyPostfix]
+        // [HarmonyPatch(typeof(Character), "GetItemResistModifiers")]
+        // public static void GetItemResistModifiersPostfix(Character __instance, ref int __result, Enums.DamageType type)
+        // {
+        //     if (MatchManager.Instance == null || !IsLivingHero(__instance) || !__instance.HaveTrait(trait4a))
+        //     {
+        //         return;
+        //     }
+        //     LogDebug("Handling trait4a - Bonus resists");
+        //     __result += (MatchManager.Instance.GetCurrentRound() - 1) * 10;
 
-        }
+        // }
 
 
 
@@ -355,49 +344,19 @@ namespace Jason
 
 
 
-
-        // [HarmonyPostfix]
-        // [HarmonyPatch(typeof(CardData), nameof(CardData.SetDescriptionNew))]
-        // public static void SetDescriptionNewPostfix(ref CardData __instance, bool forceDescription = false, Character character = null, bool includeInSearch = true)
+        // [HarmonyPrefix]
+        // [HarmonyPatch(typeof(Character), "HealAuraCurse")]
+        // public static bool HealAuraCursePrefix(ref Character __instance, AuraCurseData AC)
         // {
-        //     // LogInfo("executing SetDescriptionNewPostfix");
-        //     if (__instance == null)
+        //     // LogInfo($"HealAuraCursePrefix {subclassName}");
+        //     string traitId = trait2a;
+        //     if (AtOManager.Instance.TeamHaveTrait(traitId) && (AC == GetAuraCurseData("bleed") || AC == GetAuraCurseData("poison")) && !__instance.IsHero)
         //     {
-        //         LogDebug("Null Card");
-        //         return;
+        //         return false;
         //     }
-        //     if (!Globals.Instance.CardsDescriptionNormalized.ContainsKey(__instance.Id))
-        //     {
-        //         LogError($"missing card Id {__instance.Id}");
-        //         return;
-        //     }
+        //     return true;
 
-
-        //     if (__instance.CardName == "Mind Maze")
-        //     {
-        //         StringBuilder stringBuilder1 = new StringBuilder();
-        //         LogDebug($"Current description for {__instance.Id}: {stringBuilder1}");
-        //         string currentDescription = Globals.Instance.CardsDescriptionNormalized[__instance.Id];
-        //         stringBuilder1.Append(currentDescription);
-        //         // stringBuilder1.Replace($"When you apply", $"When you play a Mind Spell\n or apply");
-        //         stringBuilder1.Replace($"Lasts one turn", $"Lasts two turns");
-        //         BinbinNormalizeDescription(ref __instance, stringBuilder1);
-        //     }
         // }
-
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(Character), "HealAuraCurse")]
-        public static bool HealAuraCursePrefix(ref Character __instance, AuraCurseData AC)
-        {
-            // LogInfo($"HealAuraCursePrefix {subclassName}");
-            string traitId = trait2a;
-            if (AtOManager.Instance.TeamHaveTrait(traitId) && (AC == GetAuraCurseData("bleed") || AC == GetAuraCurseData("poison")) && !__instance.IsHero)
-            {
-                return false;
-            }
-            return true;
-
-        }
 
     }
 }

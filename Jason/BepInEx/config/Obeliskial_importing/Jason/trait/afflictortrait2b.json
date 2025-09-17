@@ -1,5 +1,5 @@
 {
-    "Activation": "Damage",
+    "Activation": "CastCard",
     "AuraCurseBonus1": "",
     "AuraCurseBonus2": "",
     "AuraCurseBonus3": "",
@@ -23,7 +23,7 @@
     "DamageBonusPercentValue": 0.0,
     "DamageBonusPercentValue2": 0.0,
     "DamageBonusPercentValue3": 0.0,
-    "Description": "You get All Damage +0.5 for each unique Curse in play. When you damage an enemy, gain 1 Vitality.",
+    "Description": "When you play a card that costs 2 or more, reduce by 1 the cost of your highest cost card that costs 2 or more (4 times/turn).",
     "HealFlatBonus": 0,
     "HealPercentBonus": 0.0,
     "HealReceivedFlatBonus": 0,
@@ -36,8 +36,8 @@
     "ResistModifiedValue2": 0,
     "ResistModifiedValue3": 0,
     "TimesPerRound": 0,
-    "TimesPerTurn": 8,
+    "TimesPerTurn": 4,
     "TraitCard": "",
     "TraitCardForAllHeroes": "",
-    "TraitName": "Castigate"
+    "TraitName": "Sin Eater"
 }
