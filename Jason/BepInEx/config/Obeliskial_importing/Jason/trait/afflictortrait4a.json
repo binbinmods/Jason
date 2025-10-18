@@ -23,7 +23,7 @@
     "DamageBonusPercentValue": 0.0,
     "DamageBonusPercentValue2": 0.0,
     "DamageBonusPercentValue3": 0.0,
-    "Description": "All Damage +1 for each unique Curse on monsters.",
+    "Description": "Each unique Curse on monsters reduces all their Resistances by 5%.",
     "HealFlatBonus": 0,
     "HealPercentBonus": 0.0,
     "HealReceivedFlatBonus": 0,
@@ -39,5 +39,5 @@
     "TimesPerTurn": 0,
     "TraitCard": "",
     "TraitCardForAllHeroes": "",
-    "TraitName": "Castigate"
+    "TraitName": "Mark of Sin"
 }

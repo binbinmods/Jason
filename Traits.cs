@@ -118,7 +118,7 @@ namespace Jason
                 // trait 4a;
 
                 LogDebug($"Handling Trait {traitId}: {traitName}");
-                // Castigate - All Damage +1 for each unique Curse on monsters.
+                // Castigate - Monster resists -5% per unique curse. All Damage +1 for each unique Curse on monsters.
             }
 
             else if (_trait == trait4b)
@@ -232,47 +232,48 @@ namespace Jason
         //     }
         // }
 
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(Character), "GetTraitDamageFlatModifiers")]
-        public static void GetTraitDamageFlatModifiersPostfix(Enums.DamageType DamageType, ref int __result, Character __instance)
-        {
-            // ___useCache = false;
-
-            if (!IsLivingHero(__instance) || MatchManager.Instance == null)
-            {
-                return;
-            }
-            // trait4a
-            // Castigate - foreach unique curse on monsters gain +1 all damage
-            string traitOfInterest = trait4a;
-            if (__instance.HaveTrait(traitOfInterest))
-            {
-                HashSet<string> curses = [];
-                // foreach (Hero hero in MatchManager.Instance.GetTeamHero())
-                // {
-                //     curses.UnionWith(hero.GetCurseList());
-                // }
-                foreach (NPC npc in MatchManager.Instance.GetTeamNPC())
-                {
-                    curses.UnionWith(npc.GetCurseList());
-                }
-                float multiplier = 0.5f;
-                __result += Mathf.RoundToInt(multiplier * curses.Count());
-            }
-        }
-
         // [HarmonyPostfix]
-        // [HarmonyPatch(typeof(Character), "GetItemResistModifiers")]
-        // public static void GetItemResistModifiersPostfix(Character __instance, ref int __result, Enums.DamageType type)
+        // [HarmonyPatch(typeof(Character), "GetTraitDamageFlatModifiers")]
+        // public static void GetTraitDamageFlatModifiersPostfix(Enums.DamageType DamageType, ref int __result, Character __instance)
         // {
-        //     if (MatchManager.Instance == null || !IsLivingHero(__instance) || !__instance.HaveTrait(trait4a))
+        //     // ___useCache = false;
+
+        //     if (!IsLivingHero(__instance) || MatchManager.Instance == null)
         //     {
         //         return;
         //     }
-        //     LogDebug("Handling trait4a - Bonus resists");
-        //     __result += (MatchManager.Instance.GetCurrentRound() - 1) * 10;
-
+        //     // trait4a
+        //     // Castigate - foreach unique curse on monsters gain +1 all damage
+        //     string traitOfInterest = trait4a;
+        //     if (__instance.HaveTrait(traitOfInterest))
+        //     {
+        //         HashSet<string> curses = [];
+        //         // foreach (Hero hero in MatchManager.Instance.GetTeamHero())
+        //         // {
+        //         //     curses.UnionWith(hero.GetCurseList());
+        //         // }
+        //         foreach (NPC npc in MatchManager.Instance.GetTeamNPC())
+        //         {
+        //             curses.UnionWith(npc.GetCurseList());
+        //         }
+        //         float multiplier = 0.5f;
+        //         __result += Mathf.RoundToInt(multiplier * curses.Count());
+        //     }
         // }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(Character), "GetItemResistModifiers")]
+        public static void GetItemResistModifiersPostfix(Character __instance, ref int __result, Enums.DamageType type)
+        {
+            // Trait 4a, reduce resists for each unique curse on enemies
+            if (MatchManager.Instance == null || IsLivingHero(__instance) || !AtOManager.Instance.TeamHaveTrait(trait4a))
+            {
+                return;
+            }
+            // LogDebug("Handling trait4a - Reducing Resists resists");
+            __result -= __instance.GetCurseList().Count * 5;
+
+        }
 
 
 
